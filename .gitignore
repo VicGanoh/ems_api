@@ -1,4 +1,3 @@
 .env
-apps.account.client_secret.json
 apps/account/client_secret.json
 client_secret.json
