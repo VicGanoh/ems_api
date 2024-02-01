@@ -1,17 +1,18 @@
 from .base import *
 from dotenv import dotenv_values
+import dj_database_url
 
 config = dotenv_values(".env")
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": config.get("DB_NAME"),
-        "USER": config.get("USER"),
-        "HOST": config.get("HOST"),
-        "PASSWORD": config.get("DB_PASS"),
+        "NAME": config.get("DB_NAME_PROD"),
+        "USER": config.get("USER_PROD"),
+        "HOST": config.get("HOST_PROD"),
+        "PASSWORD": config.get("DB_PASS_PROD"),
         "PORT": config.get("PORT"),
     }
 }
