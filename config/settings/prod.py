@@ -1,6 +1,7 @@
 from .base import *
 from dotenv import dotenv_values
 import dj_database_url
+import os
 
 config = dotenv_values(".env")
 
@@ -17,7 +18,7 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = config.get("PROD_SECRET_KEY")
+SECRET_KEY = os.environ.get("PROD_SECRET_KEY")
 
 AWS_ACCESS_KEY_ID = config.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = config.get("AWS_SECRET_ACCESS_KEY")
