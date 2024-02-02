@@ -1,4 +1,7 @@
 .env
 apps/account/client_secret.json
 */client_secret.json
-*/*/__pycache__
+*/__pycache__
+apps/*/__pycache__
+apps/*/*/__pycache__
+config/*/__pycache__ 
