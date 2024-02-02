@@ -5,3 +5,4 @@ apps/account/client_secret.json
 apps/*/__pycache__
 apps/*/*/__pycache__
 config/*/__pycache__ 
+env/
