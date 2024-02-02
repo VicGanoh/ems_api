@@ -28,6 +28,9 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+from config.settings import base
+from  django.conf.urls.static import static
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -52,3 +55,7 @@ urlpatterns = [
         name="redoc",
     ),
 ]
+
+if base.DEBUG:
+    urlpatterns += static(base.MEDIA_URL, document_root = base.MEDIA_ROOT)
+    urlpatterns += static(base.STATIC_URL, document_root = base.STATIC_URL)

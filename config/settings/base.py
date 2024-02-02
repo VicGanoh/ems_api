@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django_filters",
     "phonenumber_field", 
     "storages",
+    "whitenoise.runserver_nostatic",
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    
 ]
 
 ROOT_URLCONF = "config.urls"
