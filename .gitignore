@@ -8,4 +8,5 @@ config/*/__pycache__
 env/
 .env.prod
 .env.prod.db
+.env.dev.db
 employee_mgt_system_db
