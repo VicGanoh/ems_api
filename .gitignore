@@ -6,3 +6,6 @@ apps/*/__pycache__
 apps/*/*/__pycache__
 config/*/__pycache__ 
 env/
+.env.prod
+.env.prod.db
+employee_mgt_system_db

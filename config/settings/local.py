@@ -1,7 +1,5 @@
 from .base import *
-from dotenv import dotenv_values
 
-config = dotenv_values(".env")
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -9,13 +7,13 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config.get("BASE_DB_NAME"),
-        "USER": config.get("BASE_USER"),
-        "HOST": config.get("BASE_HOST"),
-        "PASSWORD": config.get("BASE_DB_PASS"),
-        "PORT": config.get("PORT"),
+        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("DB_NAME", BASE_DIR / "db.sqlite3"),
+        "USER": os.environ.get("DB_USER"),
+        "HOST": os.environ.get("HOST"),
+        "PASSWORD": os.environ.get("DB_PASS"),
+        "PORT": os.environ.get("PORT"),
     }
 }
 
-SECRET_KEY = config.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")

@@ -16,15 +16,12 @@ import random
 import string
 import os
 
-from dotenv import dotenv_values
-
-config = dotenv_values(".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 # Application definition
 
@@ -52,9 +49,7 @@ INSTALLED_APPS = [
     "django_countries",
     "djmoney",
     "django_filters",
-    "phonenumber_field", 
-    "storages",
-    "whitenoise.runserver_nostatic",
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
@@ -65,8 +60,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -125,13 +118,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-MEDIA_URL = "media/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -197,16 +183,16 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config.get("GOOGLE_CLIENT_ID")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config.get("GOOGLE_CLIENT_SECRET")
-REDIRECT_URI = config.get("REDIRECT_URI")
-SCOPE = [config.get("SCOPE")]
-ACCESS_TYPE = config.get("ACCESS_TYPE")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("GOOGLE_CLIENT_ID")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
+REDIRECT_URI = os.environ.get("REDIRECT_URI")
+SCOPE = [os.environ.get("SCOPE")]
+ACCESS_TYPE = os.environ.get("ACCESS_TYPE")
 STATE = "".join(
     random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=7)
 )
-RESPONSE_TYPE = config.get("RESPONSE_TYPE")
-GOOGLE_AUTH_URL = config.get("GOOGLE_AUTH_URL")
+RESPONSE_TYPE = os.environ.get("RESPONSE_TYPE")
+GOOGLE_AUTH_URL = os.environ.get("GOOGLE_AUTH_URL")
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
