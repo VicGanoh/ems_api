@@ -16,10 +16,12 @@ services:
     image: "postgres:12.16"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=oblongata
-      - POSTGRES_DB=employee_mgt_system_db
+    env_file:
+      - ./.env.dev.db
+    # environment:
+    #   - POSTGRES_USER=
+    #   - POSTGRES_PASSWORD=
+    #   - POSTGRES_DB=
   
 volumes:
   postgres_data:

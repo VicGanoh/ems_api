@@ -8,9 +8,13 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 
 import os
+from config.settings import base
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+if base.DEBUG:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+else:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
 
 application = get_asgi_application()

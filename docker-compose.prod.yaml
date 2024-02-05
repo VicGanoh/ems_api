@@ -1,21 +1,35 @@
 version: '3.8'
 
 services:
+  db:
+      image: postgres:12.16
+      volumes:
+        - postgres_data:/var/lib/postgresql/data/
+      env_file:
+        - ./.env.prod.db
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
-    ports:
-      - 8000:8000
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+    expose:
+      - 8000
     env_file:
-      - ./env.prod
+      - ./.env.prod
     depends_on:
       - db
-  db:
-    image: postgres:12.16
+  nginx:
+    build: ./nginx
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.prod.db
+      - static_volume:/usr/src/app/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
+  static_volume:

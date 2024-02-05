@@ -14,4 +14,4 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = os.environ.get("PROD_SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
