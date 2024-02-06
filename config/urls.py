@@ -54,3 +54,6 @@ urlpatterns = [
         name="redoc",
     ),
 ]
+
+if base.DEBUG:
+    urlpatterns += static()

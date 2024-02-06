@@ -1,12 +1,22 @@
-.env
+# Python
 apps/account/client_secret.json
 */client_secret.json
 */__pycache__
 apps/*/__pycache__
 apps/*/*/__pycache__
 config/*/__pycache__ 
+
+# Environments
 env/
 .env.prod
 .env.prod.db
 .env.dev.db
-./staticfiles
+.env
+
+# Git
+.gitignore
+.git
+
+# Docker
+.Docker
+.docker-compose.yaml
