@@ -142,7 +142,7 @@ else:
 #     os.path.join(os.path.dirname(BASE_DIR), "static"),
 # ]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
+# CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
 
 # MEDIA_URL = '/mediafiles/'
 # MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')

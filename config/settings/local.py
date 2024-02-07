@@ -1,7 +1,7 @@
 from .base import *
+import os
 
-
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
