@@ -12,11 +12,15 @@ env/
 .env.prod.db
 .env.dev.db
 .env
+.env.db
 
 # Git
 .gitignore
 .git
 
 # Docker
-.Docker
-.docker-compose.yaml
+.docker
+
+
+# Local postgres data
+data/
