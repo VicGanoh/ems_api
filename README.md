@@ -28,7 +28,7 @@ To run it locally on your machine do the following:
     ```
 2. Build and run the Docker container:
     ``` 
-    docker-compose -f docker-compose.yaml up --build -d
+    docker-compose -f docker-compose-prod.yaml up --build -d
     ```
 3. The API will be accessible at http://localhost:8000/.
 
