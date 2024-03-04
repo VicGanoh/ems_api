@@ -30,6 +30,7 @@ from drf_spectacular.views import (
 
 from config.settings import base
 from django.conf.urls.static import static
+from apps.home import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -53,6 +54,7 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
+    path("", views.index),
 ]
 
 if base.DEBUG:

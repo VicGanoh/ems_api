@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "apps.employee",
     "apps.task",
     "apps.commons",
+    "apps.home",
     # django rest
     "rest_framework",
     # authentication
