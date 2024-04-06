@@ -28,12 +28,12 @@ To run it locally on your machine do the following:
     ```
 2. Build and run the Docker container:
     ``` 
-    docker-compose -f docker-compose-prod.yaml up --build -d
+    docker-compose -f docker-compose.yaml up --build -d
     ```
-3. The API will be accessible at http://localhost:8000/.
+3. The API will be accessible at http://localhost:8000.
 
 ## Usage
-1. Access the API documentation at http://localhost:8000/docs/ for detailed information on available endpoints.
+1. Access the API documentation at http://localhost:8000/api/v1/docs/ for detailed information on available endpoints.
 2. Use tools like curl, Postman, or your preferred API client to interact with the endpoints.
 
 ## Contributing
