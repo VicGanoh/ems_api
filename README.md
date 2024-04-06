@@ -7,7 +7,7 @@ The EMS_API is a headless API written in Python using the Django framework. It p
 - Project Management: Track and manage projects.
 - Task Management: Create, update, and delete tasks associated with projects.
 - Salary Management: Handle salary information for employees.
-- Authentication: Secure endpoints with authentication.
+- Authentication: Secure endpoints with jwt authentication.
 
 ## Technologies Used
 - Python 3.8+
