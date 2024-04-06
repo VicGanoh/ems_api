@@ -20,7 +20,6 @@ from django.urls import path, include, re_path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
-    TokenVerifyView,
 )
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -32,27 +31,23 @@ from config.settings import base
 from django.conf.urls.static import static
 from apps.home import views
 
+application_context = "api/"
+version = "v1"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
-    path("api/v1/", include("apps.account.urls")),
-    path("api/v1/", include("apps.employee.urls")),
-    path("api/v1/", include("apps.project.urls")),
-    path("api/v1/", include("apps.task.urls")),
-    # YOUR PATTERNS
-    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
-    # Optional UI:
+    path(f"{application_context}{version}/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path(f"{application_context}token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path(f"{application_context}{version}/", include("apps.account.urls")),
+    path(f"{application_context}{version}/", include("apps.employee.urls")),
+    path(f"{application_context}{version}/", include("apps.project.urls")),
+    path(f"{application_context}{version}/", include("apps.task.urls")),
+    # API docs swagger
+    path(f"{application_context}{version}/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
-        "api/v1/schema/swagger-ui/",
+        f"{application_context}{version}/docs/",
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
-    ),
-    path(
-        "api/v1/schema/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
     ),
     path("", views.index),
 ]

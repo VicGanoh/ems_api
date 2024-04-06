@@ -12,3 +12,4 @@ env/
 .env.db
 ./staticfiles
 /employee_mgt_system_db
+/data
