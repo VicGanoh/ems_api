@@ -16,7 +16,6 @@ from django.shortcuts import get_object_or_404
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    # TODO: employee address should be one to many
     class Meta:
         model = Address
         fields = "__all__"
@@ -68,11 +67,3 @@ class SalarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Salary
         fields = "__all__"
-
-    # def update(self, instance, validated_data):
-    #     instance.amount = validated_data.get("amount", instance.amount)
-    #     instance.start_date = validated_data.get("start_date", instance.start_date)
-    #     instance.end_date = validated_data.get("end_date", instance.end_date)
-
-    #     instance.save()
-    #     return instance
