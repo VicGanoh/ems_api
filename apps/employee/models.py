@@ -86,11 +86,11 @@ class Employee(BaseTimestamp):
         _("employee id"), primary_key=True, default=uuid.uuid4(), editable=False
     )
     user = models.OneToOneField("account.CustomUser", on_delete=models.CASCADE)
-    first_name = models.CharField(_("First name"), max_length=100,)
-    last_name = models.CharField(_("Last name"), max_length=100,)
-    other_names = other_names = models.CharField(
-        _("other names"), max_length=100, blank=True, default=""
-    )
+    # first_name = models.CharField(_("First name"), max_length=100,)
+    # last_name = models.CharField(_("Last name"), max_length=100,)
+    # other_names = other_names = models.CharField(
+    #     _("other names"), max_length=100, blank=True, default=""
+    # )
     date_of_birth = models.DateField(_("date of birth"), blank=False)
     gender = models.CharField(
         _("gender"), max_length=6, choices=Gender.choices, blank=False

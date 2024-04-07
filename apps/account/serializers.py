@@ -53,17 +53,23 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         Raises:
             serializers.ValidationError: If the passwords do not match.
         """
-        old_password = data["old_password"]
-        new_password = data["new_password"]
-        confirm_new_password = data["confirm_new_password"]
-
-        if new_password != confirm_new_password:
-            return serializers.ValidationError("New password and confirm new password do not match")
+        old_password = data.get("old_password")
         
-        if not self.context["request"].user.check_password(old_password):
-            return serializers.ValidationError("Old password is incorrect")
+        request = self.context.get("request")
+        if not request:
+            raise serializers.ValidationError("Context missing 'request'")
+        
+        user = request.user
+        if not user.check_password(old_password):
+            raise serializers.ValidationError("Old password is incorrect")
         
         return data
+    
+    def update(self, instance, validated_data):
+        new_password = validated_data["new_password"]
+        instance.set_password(new_password)
+        instance.save()
+        return instance
     
     class Meta:
         model = CustomUser
