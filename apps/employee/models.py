@@ -86,6 +86,11 @@ class Employee(BaseTimestamp):
         _("employee id"), primary_key=True, default=uuid.uuid4(), editable=False
     )
     user = models.OneToOneField("account.CustomUser", on_delete=models.CASCADE)
+    first_name = models.CharField(_("First name"), max_length=100,)
+    last_name = models.CharField(_("Last name"), max_length=100,)
+    other_names = other_names = models.CharField(
+        _("other names"), max_length=100, blank=True, default=""
+    )
     date_of_birth = models.DateField(_("date of birth"), blank=False)
     gender = models.CharField(
         _("gender"), max_length=6, choices=Gender.choices, blank=False
@@ -104,25 +109,8 @@ class Employee(BaseTimestamp):
         verbose_name = _("employee")
         verbose_name_plural = _("employees")
 
-    # def clean(self):
-    #     validation_message = "This field is required"
-    #     if not self.user:
-    #         if self.first_name == "":
-    #             raise ValidationError({"first_name":validation_message})
-    #         if self.last_name == "":
-    #             raise ValidationError({"last_name":validation_message})
-    #         if self.email == "":
-    #             raise ValidationError({"email":validation_message})
-
-    # def save(self, *args, **kwargs):
-    #     if self.user is not None:
-    #         self.first_name = self.user.first_name
-    #         self.last_name = self.user.last_name
-    #         self.email = self.user.email
-    #     super().save(*args, **kwargs)
-
     @property
-    def fullname(self):
+    def full_name(self):
         if self.user.other_names == "":
             return f"{self.user.first_name} {self.user.last_name}"
         else:
