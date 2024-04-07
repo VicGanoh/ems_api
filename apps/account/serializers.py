@@ -6,12 +6,6 @@ from apps.account.models import Role, CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    # first_name = serializers.CharField(required=True)
-    # last_name = serializers.CharField(required=True)
-    # email = serializers.EmailField(required=True)
-    # password = serializers.CharField(write_only=True)
-    # role = serializers.ChoiceField(choices=Role.choices)
-
     class Meta:
         model = CustomUser
         fields = [
