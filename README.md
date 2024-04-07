@@ -26,11 +26,15 @@ To run it locally on your machine do the following:
     git clone https://github.com/vicganoh/ems_api.git
     cd ems_api
     ```
-2. Build and run the Docker container:
+2. Open your terminal to Build and run the Docker container:
     ``` 
-    docker-compose -f docker-compose.yaml up --build -d
+    docker-compose -f local.yaml up --build -d
     ```
 3. The API will be accessible at http://localhost:8000.
+4. To create an admin account to access the django admin page: Run the following command in your terminal and access django admin page at http://localhost:8000/admin
+    ``` 
+    docker-compose -f local.yaml exec web python manage.py createsuperuser
+    ```
 
 ## Usage
 1. Access the API documentation at http://localhost:8000/api/v1/docs/ for detailed information on available endpoints.
