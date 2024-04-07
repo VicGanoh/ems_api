@@ -191,7 +191,7 @@ class OAuth2Callback(APIView):
         return redirect("tasks")
 
 
-class UpdatePasswordView(CreateAPIView):
+class ChangePasswordView(CreateAPIView):
     permission_classes = []
     serializer_class = ChangePasswordSerializer
 
@@ -214,11 +214,18 @@ class UpdatePasswordView(CreateAPIView):
         if serializer.is_valid():
             old_password = serializer.validated_data["old_password"]
             new_password = serializer.validated_data["new_password"]
+            confirm_new_password = serializer.validated_data["confirm_new_password"]
+
             if not request.user.check_password(old_password):
                 return Response(
                     CustomResponse.error(message="Old password is incorrect")
                 )
-
+            
+            if new_password != confirm_new_password:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data=CustomResponse.error(message="New password and confirm new password do not match")
+                )
             request.user.set_password(new_password)
             request.user.save()
             response_data = CustomResponse.success(
