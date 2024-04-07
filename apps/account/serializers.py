@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models
 
-from apps.account.models import Role, CustomUser
+from apps.account.models import CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -41,10 +40,36 @@ class LoginSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)
 
+    def validate(self, data):
+        """
+        Validate the old_password, new_password and confirm_new_password fields.
+
+        Args:
+            attrs (dict): The dictionary containing the field values.
+
+        Returns:
+            dict: The validated attributes.
+
+        Raises:
+            serializers.ValidationError: If the passwords do not match.
+        """
+        old_password = data["old_password"]
+        new_password = data["new_password"]
+        confirm_new_password = data["confirm_new_password"]
+
+        if new_password != confirm_new_password:
+            return serializers.ValidationError("New password and confirm new password do not match")
+        
+        if not self.context["request"].user.check_password(old_password):
+            return serializers.ValidationError("Old password is incorrect")
+        
+        return data
+    
     class Meta:
         model = CustomUser
-        fields = ["old_password", "new_password"]
+        fields = ["old_password", "new_password", "confirm_new_password"]
 
 
 class PasswordResetSerializer(serializers.ModelSerializer):

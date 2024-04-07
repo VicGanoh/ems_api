@@ -228,15 +228,7 @@ class UpdatePasswordView(CreateAPIView):
             return Response(response_data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# TODO: implement a password reset
-class PasswordResetView(CreateAPIView):
-    permission_classes = []
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-    pass
-
+    
 
 class ListUsersView(ListAPIView):
     permission_classes = [permissions.IsSuperAdminOrAdminUser | IsAuthenticated]
