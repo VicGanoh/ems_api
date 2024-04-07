@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from django.contrib.auth.models
-
 from apps.account.models import CustomUser
 
 
