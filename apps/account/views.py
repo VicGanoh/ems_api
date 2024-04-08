@@ -1,18 +1,14 @@
 from django.shortcuts import redirect
 from rest_framework.generics import (
-    GenericAPIView,
     ListAPIView,
     RetrieveDestroyAPIView,
     CreateAPIView,
-    ListCreateAPIView,
 )
 from rest_framework.views import APIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from apps.account.serializers import (
     CustomUserSerializer,
     LoginSerializer,
     ChangePasswordSerializer,
-    PasswordResetSerializer,
 )
 from apps.account.models import CustomUser
 from rest_framework.response import Response
@@ -25,7 +21,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.exceptions import ValidationError
 from apps.commons.models import CustomResponse
 from rest_framework.exceptions import NotFound
 from django.conf import settings
@@ -33,7 +28,6 @@ import google_auth_oauthlib.flow
 import jwt
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from drf_spectacular.types import OpenApiTypes
 
 
 class RegistrationView(CreateAPIView):
@@ -78,7 +72,7 @@ class LoginView(CreateAPIView):
         examples=[
             OpenApiExample(
                 name="Example of a successful login response",
-                description="After a successful login, the response returns an access toekn for authenticating the client application to access specific resources on the resource owner's behalf",
+                description="After a successful login, the response returns an access token for authenticating the client application to access specific resources on the resource owner's behalf",
                 value=CustomResponse.success(
                     data={"access": "string"},
                 ),
@@ -191,7 +185,7 @@ class OAuth2Callback(APIView):
         return redirect("tasks")
 
 
-class UpdatePasswordView(CreateAPIView):
+class ChangePasswordView(CreateAPIView):
     permission_classes = []
     serializer_class = ChangePasswordSerializer
 
@@ -209,14 +203,23 @@ class UpdatePasswordView(CreateAPIView):
         ],
     )
     def post(self, request, *args, **kwargs):
-        serializer = ChangePasswordSerializer(data=request.data)
+        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
 
         if serializer.is_valid():
             old_password = serializer.validated_data["old_password"]
             new_password = serializer.validated_data["new_password"]
+            confirm_new_password = serializer.validated_data["confirm_new_password"]
+
             if not request.user.check_password(old_password):
                 return Response(
-                    CustomResponse.error(message="Old password is incorrect")
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data=CustomResponse.error(message="Old password is incorrect")
+                )
+            
+            if new_password != confirm_new_password:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data=CustomResponse.error(message="New password and confirm password do not match")
                 )
 
             request.user.set_password(new_password)
@@ -229,14 +232,7 @@ class UpdatePasswordView(CreateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# TODO: implement a password reset
-class PasswordResetView(CreateAPIView):
-    permission_classes = []
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
-    pass
-
+    
 
 class ListUsersView(ListAPIView):
     permission_classes = [permissions.IsSuperAdminOrAdminUser | IsAuthenticated]

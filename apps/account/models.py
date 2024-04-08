@@ -19,10 +19,6 @@ class CustomUserManager(UserManager):
     def create_user(self, email: str, password=None, **other_fields):
         if not email:
             raise ValueError("Please provide an email address")
-        # if not first_name:
-        #     raise ValueError("Please provide user first name")
-        # if not last_name:
-        #     raise ValueError("Please provide user last name")
 
         user = self.model(
             email=self.normalize_email(email=email),
@@ -72,97 +68,20 @@ class CustomUser(BaseTimestamp, AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     def save(self, *args, **kwargs):
-        department_content_type = ContentType.objects.get_for_model(Department)
-        employee_content_type = ContentType.objects.get_for_model(Employee)
-        salary_content_type = ContentType.objects.get_for_model(Salary)
-        address_content_type = ContentType.objects.get_for_model(Address)
-        project_content_type = ContentType.objects.get_for_model(Project)
-        task_content_type = ContentType.objects.get_for_model(Task)
+        self.set_user_permissions(args, kwargs)
+        super(CustomUser, self).save(*args, **kwargs)
 
+    def set_user_permissions(self, args, kwargs):
         if self.role == Role.SUPER_ADMIN.value:
             self.is_staff = True
             self.is_superuser = True
-            super().save(*args, **kwargs)
         if self.role == Role.ADMIN.value:
             self.is_staff = True
-            super().save(*args, **kwargs)
-            if department_content_type:
-                department_permissions = Permission.objects.filter(
-                    content_type=department_content_type
-                )
-                for perm in department_permissions:
-                    self.user_permissions.add(perm)
-            if employee_content_type:
-                employee_permissions = Permission.objects.filter(
-                    content_type=employee_content_type
-                )
-                for perm in employee_permissions:
-                    self.user_permissions.add(perm)
-            if salary_content_type:
-                salary_permissions = Permission.objects.filter(
-                    content_type=salary_content_type
-                )
-                for perm in salary_permissions:
-                    self.user_permissions.add(perm)
-            if address_content_type:
-                address_permissions = Permission.objects.filter(
-                    content_type=address_content_type
-                )
-                for perm in address_permissions:
-                    self.user_permissions.add(perm)
-            if project_content_type:
-                project_permissions = Permission.objects.filter(
-                    content_type=project_content_type
-                )
-                for perm in project_permissions:
-                    self.user_permissions.add(perm)
-            if task_content_type:
-                task_permissions = Permission.objects.filter(
-                    content_type=task_content_type
-                )
-                for perm in task_permissions:
-                    self.user_permissions.add(perm)
         if self.role == Role.SUPERVISOR.value:
             self.is_staff = True
-            super().save(*args, **kwargs)
-            if department_content_type:
-                department_permissions = Permission.objects.filter(
-                    content_type=department_content_type
-                )
-                for perm in department_permissions:
-                    if perm.codename == "view_department":
-                        self.user_permissions.add(perm)
-            if employee_content_type:
-                employee_permissions = Permission.objects.filter(
-                    content_type=employee_content_type
-                )
-                for perm in employee_permissions:
-                    if perm.codename == "view_employee":
-                        self.user_permissions.add(perm)
-            if project_content_type:
-                project_permissions = Permission.objects.filter(
-                    content_type=project_content_type
-                )
-                for perm in project_permissions:
-                    self.user_permissions.add(perm)
         if self.role == Role.PAYROLL_ADMINISTRATOR.value:
             self.is_staff = True
-            super().save(*args, **kwargs)
-            if department_content_type:
-                department_permissions = Permission.objects.filter(
-                    content_type=department_content_type
-                )
-                for perm in department_permissions:
-                    if perm.codename == "view_department":
-                        self.user_permissions.add(perm)
-            if salary_content_type:
-                salary_permissions = Permission.objects.filter(
-                    content_type=salary_content_type
-                )
-                for perm in salary_permissions:
-                    self.user_permissions.add(perm)
-
-        super().save(*args, **kwargs)
+            
     
     class Meta:
         db_table = "users"

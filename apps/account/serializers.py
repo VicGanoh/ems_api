@@ -1,17 +1,8 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-from apps.account.models import Role, CustomUser
+from apps.account.models import CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    # first_name = serializers.CharField(required=True)
-    # last_name = serializers.CharField(required=True)
-    # email = serializers.EmailField(required=True)
-    # password = serializers.CharField(write_only=True)
-    # role = serializers.ChoiceField(choices=Role.choices)
-
     class Meta:
         model = CustomUser
         fields = [
@@ -47,10 +38,42 @@ class LoginSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+    confirm_new_password = serializers.CharField(required=True)
 
+    def validate(self, data):
+        """
+        Validate the old_password, new_password and confirm_new_password fields.
+
+        Args:
+            attrs (dict): The dictionary containing the field values.
+
+        Returns:
+            dict: The validated attributes.
+
+        Raises:
+            serializers.ValidationError: If the passwords do not match.
+        """
+        old_password = data.get("old_password")
+        
+        request = self.context.get("request")
+        if not request:
+            raise serializers.ValidationError("Context missing 'request'")
+        
+        user = request.user
+        if not user.check_password(old_password):
+            raise serializers.ValidationError("Old password is incorrect")
+        
+        return data
+    
+    def update(self, instance, validated_data):
+        new_password = validated_data["new_password"]
+        instance.set_password(new_password)
+        instance.save()
+        return instance
+    
     class Meta:
         model = CustomUser
-        fields = ["old_password", "new_password"]
+        fields = ["old_password", "new_password", "confirm_new_password"]
 
 
 class PasswordResetSerializer(serializers.ModelSerializer):

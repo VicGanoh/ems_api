@@ -16,7 +16,6 @@ from django.shortcuts import get_object_or_404
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    # TODO: employee address should be one to many
     class Meta:
         model = Address
         fields = "__all__"
@@ -60,50 +59,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = "__all__"
 
-    # def create(self, validated_data):
-    #     address_data = validated_data.pop("address")
-    #     user_data = validated_data.pop("user")
-
-    #     # if user_data:
-    #     #     user_instance = get_object_or_404(CustomUser, id=user_data.id)
-    #     #     validated_data["user"] = user_instance
-
-    #     # if user_data is not None:
-    #     #     validated_data["first_name"] = user_instance.first_name
-    #     #     validated_data["last_name"] = user_instance.last_name
-    #     #     validated_data["email"] = user_instance.email
-
-    #     address_instance = Address.objects.create(**address_data)
-    #     user_instance = CustomUser.objects.create_user(**user_data)
-    #     employee_instance = Employee.objects.create(
-    #         user=user_instance, address=address_instance, **validated_data
-    #     )
-
-    #     return employee_instance
-
-    # def update(self, instance, validated_data):
-    #     address_data = validated_data.pop("address")
-
-    #     instance.address.address_line1 = address_data.get(
-    #         "address_line1", instance.address.address_line1
-    #     )
-    #     instance.address.address_line2 = address_data.get(
-    #         "address_line2", instance.address.address_line2
-    #     )
-    #     instance.address.city = address_data.get("city", instance.address.city)
-    #     instance.address.region = address_data.get("region", instance.address.region)
-    #     instance.address.postal_code = address_data.get(
-    #         "postal_code", instance.address.postal_code
-    #     )
-
-    #     instance.phone_number = validated_data.get(
-    #         "phone_number", instance.phone_number
-    #     )
-    #     instance.job_title = validated_data.get("job_title", instance.job_title)
-
-    #     instance.save()
-    #     return instance
-
 
 class SalarySerializer(serializers.ModelSerializer):
     employee = serializers.PrimaryKeyRelatedField(queryset=Employee.objects.all())
@@ -112,11 +67,3 @@ class SalarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Salary
         fields = "__all__"
-
-    # def update(self, instance, validated_data):
-    #     instance.amount = validated_data.get("amount", instance.amount)
-    #     instance.start_date = validated_data.get("start_date", instance.start_date)
-    #     instance.end_date = validated_data.get("end_date", instance.end_date)
-
-    #     instance.save()
-    #     return instance
