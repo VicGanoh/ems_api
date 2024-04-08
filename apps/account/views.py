@@ -1,18 +1,14 @@
 from django.shortcuts import redirect
 from rest_framework.generics import (
-    GenericAPIView,
     ListAPIView,
     RetrieveDestroyAPIView,
     CreateAPIView,
-    ListCreateAPIView,
 )
 from rest_framework.views import APIView
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from apps.account.serializers import (
     CustomUserSerializer,
     LoginSerializer,
     ChangePasswordSerializer,
-    PasswordResetSerializer,
 )
 from apps.account.models import CustomUser
 from rest_framework.response import Response
@@ -25,7 +21,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.exceptions import ValidationError
 from apps.commons.models import CustomResponse
 from rest_framework.exceptions import NotFound
 from django.conf import settings
@@ -33,7 +28,6 @@ import google_auth_oauthlib.flow
 import jwt
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from drf_spectacular.types import OpenApiTypes
 
 
 class RegistrationView(CreateAPIView):
