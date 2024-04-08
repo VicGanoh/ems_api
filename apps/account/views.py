@@ -72,7 +72,7 @@ class LoginView(CreateAPIView):
         examples=[
             OpenApiExample(
                 name="Example of a successful login response",
-                description="After a successful login, the response returns an access toekn for authenticating the client application to access specific resources on the resource owner's behalf",
+                description="After a successful login, the response returns an access token for authenticating the client application to access specific resources on the resource owner's behalf",
                 value=CustomResponse.success(
                     data={"access": "string"},
                 ),
