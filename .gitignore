@@ -13,3 +13,4 @@ env/
 ./staticfiles
 /employee_mgt_system_db
 /data
+**/migrations
