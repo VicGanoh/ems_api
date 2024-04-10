@@ -14,4 +14,4 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "uku96+km&eq(wefr+@a!7nn09by_*!mc#)y)6g7uj)-t=3*8hjuku96+km&eq(wefr+@a!7nn09by_*!mc#)y)6g7uj)-t=3*8hj"
