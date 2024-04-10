@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import gettext_lazy as _
-from apps.commons.models import BaseTimestamp
+from apps.commons.models import BaseTimestampedModel, UUIDModel
 
 from apps.employee.models import Department, Employee, Salary, Address
 from apps.project.models import Project
@@ -47,10 +47,7 @@ class Role(models.TextChoices):
     PAYROLL_ADMINISTRATOR = "PAYROLL ADMINISTRATOR", _("Payroll Administrator")
 
 
-class CustomUser(BaseTimestamp, AbstractUser):
-    id = models.UUIDField(
-        _("user id"), primary_key=True, default=uuid.uuid4(), editable=False
-    )
+class CustomUser(BaseTimestampedModel, UUIDModel, AbstractUser):
     first_name = models.CharField(_("first name"), max_length=150, blank=False)
     last_name = models.CharField(_("last name"), max_length=150, blank=False)
     other_names = models.CharField(
@@ -60,6 +57,7 @@ class CustomUser(BaseTimestamp, AbstractUser):
     email = models.EmailField(
         _("email address"), max_length=225, blank=False, unique=True
     )
+    is_verified = models.BooleanField(_("is verified"), default=False)
     role = models.CharField(_("role"), max_length=21, choices=Role.choices, blank=True)
 
     objects = CustomUserManager()

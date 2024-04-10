@@ -46,7 +46,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-    list_display = ("email", "first_name", "last_name", "is_staff", "role")
+    list_display = ("id", "email", "first_name", "last_name", "is_staff", "is_verified", "role")
     ordering = ("email",)
 
     def get_queryset(self, request):

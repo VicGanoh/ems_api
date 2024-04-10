@@ -40,13 +40,13 @@ class TaskStatus(models.TextChoices):
 
 class UUIDModel(models.Model):
     id = models.UUIDField(
-        _("address id"), primary_key=True, default=uuid.uuid4, editable=False
+        _("ID"), primary_key=True, default=uuid.uuid4, editable=False
     )
 
     class Meta:
         abstract = True
 
-class BaseTimestampedModel(UUIDModel):
+class BaseTimestampedModel(models.Model):
     created_at = models.DateTimeField(_("created at"), auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
@@ -54,7 +54,7 @@ class BaseTimestampedModel(UUIDModel):
         abstract = True
         ordering = ["-created_at", "-updated_at"]
 
-class BaseAddress(BaseTimestampedModel):
+class BaseAddress(BaseTimestampedModel, UUIDModel):
     address_line1 = models.CharField(_("address line 1"), max_length=100, blank=True, default="")
     address_line2 = models.CharField(
         _("address line 2"), max_length=100, blank=True, default=""
