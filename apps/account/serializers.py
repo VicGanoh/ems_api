@@ -91,5 +91,3 @@ class PasswordResetSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("User with provided email does not exist")
         
         return attrs
-
-
