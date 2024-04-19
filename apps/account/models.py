@@ -122,3 +122,12 @@ class EmailVerification(BaseTimestampedModel):
         if self.expires_at < timezone.now():
             self.expired = True
             self.save()
+    
+    def is_expired(self) -> bool:
+        """
+        Checks if the verification has expired.
+
+        Returns:
+            bool: True if the verification has expired, False otherwise.
+        """
+        return self.expires_at < timezone.now()

@@ -4,9 +4,7 @@ from django.contrib import admin
 from typing import Any
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.db.models.query import QuerySet
-from django.http.request import HttpRequest
-from apps.account.models import CustomUser, Role
+from apps.account.models import CustomUser, EmailVerification
 from django.utils.translation import gettext_lazy as _
 
 
@@ -53,3 +51,10 @@ class CustomUserAdmin(UserAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.filter(is_active=True)
+
+
+@admin.register(EmailVerification)
+class EmailVerificationAdmin(admin.ModelAdmin):
+    list_display = ("user", "token", "used", "expired", "expires_at",)
+    ordering = ("used", "user", "expires_at")
+    list_filter = ("expired",)
