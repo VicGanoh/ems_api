@@ -82,3 +82,14 @@ class PasswordResetSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["email"]
+    
+    def validate(self, attrs):
+        email = attrs.get("email")
+        try:
+            CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User with provided email does not exist")
+        
+        return attrs
+
+
