@@ -1,14 +1,10 @@
 from django.db import models
 
-# Create your models here.
-from typing import Any
-from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from datetime import timedelta
 from apps.commons.models import BaseTimestampedModel, UUIDModel
-
 
 
 class CustomUserManager(UserManager):
@@ -75,8 +71,7 @@ class CustomUser(BaseTimestampedModel, UUIDModel, AbstractUser):
             self.is_staff = True
         if self.role == Role.PAYROLL_ADMINISTRATOR.value:
             self.is_staff = True
-            
-    
+
     class Meta:
         db_table = "users"
         verbose_name = _("User")
@@ -98,7 +93,12 @@ class EmailVerification(BaseTimestampedModel):
         verbose_name=_("user"),
     )
     token = models.CharField(
-        _("verification token"), unique=True, editable=False, max_length=256, null=True, blank=True
+        _("verification token"),
+        unique=True,
+        editable=False,
+        max_length=256,
+        null=True,
+        blank=True,
     )
     used = models.BooleanField(_("used"), default=False)
     expired = models.BooleanField(_("expired"), default=False)
@@ -106,7 +106,7 @@ class EmailVerification(BaseTimestampedModel):
 
     def __str__(self) -> str:
         return f"Email verification for {self.user.get_full_name}"
-    
+
     def set_expiration_date(self) -> None:
         """
         Sets the expiration date for the user if it is not already set.
@@ -114,7 +114,7 @@ class EmailVerification(BaseTimestampedModel):
         """
         if not self.expires_at:
             self.expires_at = timezone.now() + timedelta(hours=24)
-    
+
     def check_and_set_expiration(self) -> None:
         """
         Checks if the verification has expired and sets the expired status accordingly.
@@ -122,7 +122,7 @@ class EmailVerification(BaseTimestampedModel):
         if self.expires_at < timezone.now():
             self.expired = True
             self.save()
-    
+
     def is_expired(self) -> bool:
         """
         Checks if the verification has expired.

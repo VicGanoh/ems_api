@@ -16,4 +16,4 @@ DATABASES = {
     }
 }
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "8r30txb0y8-t+vv1%kksi2!l$obj$ript2fof_cy^4a0kr9iw"

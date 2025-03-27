@@ -18,8 +18,6 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView
-from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from apps.commons.models import CustomResponse
 from rest_framework.exceptions import NotFound
@@ -203,7 +201,9 @@ class ChangePasswordView(CreateAPIView):
         ],
     )
     def post(self, request, *args, **kwargs):
-        serializer = ChangePasswordSerializer(data=request.data, context={"request": request})
+        serializer = ChangePasswordSerializer(
+            data=request.data, context={"request": request}
+        )
 
         if serializer.is_valid():
             old_password = serializer.validated_data["old_password"]
@@ -213,13 +213,15 @@ class ChangePasswordView(CreateAPIView):
             if not request.user.check_password(old_password):
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
-                    data=CustomResponse.error(message="Old password is incorrect")
+                    data=CustomResponse.error(message="Old password is incorrect"),
                 )
-            
+
             if new_password != confirm_new_password:
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
-                    data=CustomResponse.error(message="New password and confirm password do not match")
+                    data=CustomResponse.error(
+                        message="New password and confirm password do not match"
+                    ),
                 )
 
             request.user.set_password(new_password)
@@ -232,7 +234,6 @@ class ChangePasswordView(CreateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
 
 class ListUsersView(ListAPIView):
     permission_classes = [permissions.IsSuperAdminOrAdminUser | IsAuthenticated]

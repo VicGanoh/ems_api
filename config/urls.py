@@ -35,14 +35,26 @@ version = "v1"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path(f"{application_context}{version}/login/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path(f"{application_context}token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        f"{application_context}{version}/login/",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
+    ),
+    path(
+        f"{application_context}token/refresh/",
+        TokenRefreshView.as_view(),
+        name="token_refresh",
+    ),
     path(f"{application_context}{version}/", include("apps.account.urls")),
     path(f"{application_context}{version}/", include("apps.employee.urls")),
     path(f"{application_context}{version}/", include("apps.project.urls")),
     path(f"{application_context}{version}/", include("apps.task.urls")),
     # API docs swagger
-    path(f"{application_context}{version}/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        f"{application_context}{version}/schema/",
+        SpectacularAPIView.as_view(),
+        name="schema",
+    ),
     path(
         f"{application_context}{version}/docs/",
         SpectacularSwaggerView.as_view(url_name="schema"),
@@ -52,7 +64,4 @@ urlpatterns = [
 ]
 
 if base.DEBUG:
-    urlpatterns += static(
-        base.MEDIA_URL,
-        document_root=base.MEDIA_ROOT
-    )
+    urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)

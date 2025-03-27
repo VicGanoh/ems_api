@@ -54,23 +54,23 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
             serializers.ValidationError: If the passwords do not match.
         """
         old_password = data.get("old_password")
-        
+
         request = self.context.get("request")
         if not request:
             raise serializers.ValidationError("Context missing 'request'")
-        
+
         user = request.user
         if not user.check_password(old_password):
             raise serializers.ValidationError("Old password is incorrect")
-        
+
         return data
-    
+
     def update(self, instance, validated_data):
         new_password = validated_data["new_password"]
         instance.set_password(new_password)
         instance.save()
         return instance
-    
+
     class Meta:
         model = CustomUser
         fields = ["old_password", "new_password", "confirm_new_password"]
@@ -82,12 +82,12 @@ class PasswordResetSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ["email"]
-    
+
     def validate(self, attrs):
         email = attrs.get("email")
         try:
             CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
             raise serializers.ValidationError("User with provided email does not exist")
-        
+
         return attrs

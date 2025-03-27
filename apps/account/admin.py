@@ -1,14 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
-from typing import Any
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from apps.account.models import CustomUser, EmailVerification
 from django.utils.translation import gettext_lazy as _
 
 
-# Register your models here.
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
@@ -45,7 +41,15 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-    list_display = ("id", "email", "first_name", "last_name", "is_staff", "is_verified", "role")
+    list_display = (
+        "id",
+        "email",
+        "first_name",
+        "last_name",
+        "is_staff",
+        "is_verified",
+        "role",
+    )
     ordering = ("email",)
 
     def get_queryset(self, request):
@@ -55,6 +59,12 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(EmailVerification)
 class EmailVerificationAdmin(admin.ModelAdmin):
-    list_display = ("user", "token", "used", "expired", "expires_at",)
+    list_display = (
+        "user",
+        "token",
+        "used",
+        "expired",
+        "expires_at",
+    )
     ordering = ("used", "user", "expires_at")
     list_filter = ("expired",)
