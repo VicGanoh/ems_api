@@ -15,12 +15,15 @@ from django.utils.timezone import timedelta
 import random
 import string
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # Application definition
 
@@ -42,7 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     # authentication
     "rest_framework_simplejwt",
-    "oauth2_provider",
+    # "oauth2_provider",
     # api documentation
     "drf_spectacular",
     # utils
@@ -167,7 +170,7 @@ AUTH_USER_MODEL = "account.CustomUser"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        # "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -215,16 +218,16 @@ SPECTACULAR_SETTINGS = {
 }
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("GOOGLE_CLIENT_ID")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
-REDIRECT_URI = os.environ.get("REDIRECT_URI")
-SCOPE = [os.environ.get("SCOPE")]
-ACCESS_TYPE = os.environ.get("ACCESS_TYPE")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_CLIENT_ID", "None")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "None")
+REDIRECT_URI = os.getenv("REDIRECT_URI", "None")
+SCOPE = [os.getenv("SCOPE", "None")]
+ACCESS_TYPE = os.getenv("ACCESS_TYPE", "None")
 STATE = "".join(
     random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=7)
 )
-RESPONSE_TYPE = os.environ.get("RESPONSE_TYPE")
-GOOGLE_AUTH_URL = os.environ.get("GOOGLE_AUTH_URL")
+RESPONSE_TYPE = os.getenv("RESPONSE_TYPE", "None")
+GOOGLE_AUTH_URL = os.getenv("GOOGLE_AUTH_URL", "None")
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",

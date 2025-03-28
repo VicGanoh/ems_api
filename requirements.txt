@@ -11,6 +11,7 @@ click
 cryptography
 Deprecated
 Django
+drf-spectacular
 django-countries
 django-filter
 django-money
