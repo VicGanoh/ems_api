@@ -1,3 +1,4 @@
+
 .env
 apps/account/client_secret.json
 */client_secret.json
@@ -14,3 +15,5 @@ env/
 /employee_mgt_system_db
 /data
 **/migrations
+.DS_Store
+.ruff_cache

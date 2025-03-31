@@ -104,6 +104,11 @@ class EmailVerification(BaseTimestampedModel):
     expired = models.BooleanField(_("expired"), default=False)
     expires_at = models.DateTimeField(_("expires at"), null=True, blank=True)
 
+    class Meta:
+        db_table = "email_verifications"
+        verbose_name = _("Email Verification")
+        verbose_name_plural = _("Email Verifications")
+
     def __str__(self) -> str:
         return f"Email verification for {self.user.get_full_name}"
 
@@ -131,3 +136,50 @@ class EmailVerification(BaseTimestampedModel):
             bool: True if the verification has expired, False otherwise.
         """
         return self.expires_at < timezone.now()
+
+
+class Permission(BaseTimestampedModel, UUIDModel):
+    """
+    Custom permission model for fine-grained access control.
+    """
+    name = models.CharField(_("name"), max_length=255, unique=True)
+    codename = models.SlugField(_("codename"), max_length=255, unique=True)
+    description = models.TextField(_("description"), blank=True)
+
+    class Meta:
+        db_table = "permissions"
+        verbose_name = _("Permission")
+        verbose_name_plural = _("Permissions")
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.codename}"
+
+
+class Role(BaseTimestampedModel, UUIDModel):
+    """
+    Custom role model for fine-grained access control.
+    """
+    name = models.CharField(_("name"), max_length=255, unique=True)
+    description = models.TextField(_("description"), blank=True)
+    permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_("permissions"),
+        related_name="roles",
+        blank=True,
+    )
+    created_by = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="roles",
+        verbose_name=_("created by"),
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        db_table = "roles"
+        verbose_name = _("Role")
+        verbose_name_plural = _("Roles")
+
+    def __str__(self) -> str:
+        return self.name
